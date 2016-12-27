@@ -23,7 +23,7 @@ public abstract class TargetObject {
 
 
     public void sayHello(){
-        printer.print("注入to");
+        printer.print("printer");
         createPrototypePrinter().print("这个是prototype方法");
         createSingletonPrinter().print("这个是singleton方法");
     }

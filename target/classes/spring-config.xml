@@ -54,5 +54,12 @@
 
     </bean>
 
+    <bean id="prototypeTarget" class="com.injectMethod.TargetObject" scope="prototype">
+        <property name="printer" ref="prototypePrinter"></property>
+        <lookup-method name="createPrototypePrinter" bean="prototypePrinter"></lookup-method>
+        <lookup-method name="createSingletonPrinter" bean="singletonPrinter"></lookup-method>
+
+    </bean>
+
 
 </beans>
