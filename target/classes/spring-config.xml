@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+
+    <!--测试DI-->
+
+    <!--根据ID实例化-->
+    <!--<bean id="rick" class="com.cat.RickHi"/>-->
+    <bean id="morty" class="com.swim.Morty"/>
+
+    <!--根据构造方法注入-->
+
+    <!--autowire注入，会自动寻找set方法，一旦名字一样就自动注入-->
+    <!--<bean id="rick" class="com.swim.RickHi" autowire="byName">-->
+    <!--byType注入,会寻找 Morty类型，有一个就直接找到，多个观察有没有primary=true的bean,有就使用，没有就报错-->
+    <!--也可以使用autowire-candidate=false来避免找到-->
+    <bean id="rick" class="com.swim.RickHi" autowire="byType">
+        <!--constructor和byType功能一样       -->
+        <!--<bean id="rick" class="com.swim.RickHi" autowire="constructor">-->
+        <constructor-arg name="age" value="65"/>
+        <!--注入bean ID-->
+        <!--<constructor-arg name="morty" ref="morty"/>-->
+        <property name="songs">
+            <list value-type="java.lang.String">
+                <value>who had known</value>
+                <value>step</value>
+                <value>love for a child</value>
+                <value>who had known</value>
+
+            </list>
+
+        </property>
+        <property name="tel">
+            <map key-type="java.lang.String" value-type="java.lang.Integer">
+                <entry key="jason" value="1380998754"></entry>
+                <!--引用对象和引用基本类型是一样的用法-->
+                <!--<entry key-ref="" value-ref=""></entry>-->
+            </map>
+        </property>
+    </bean>
+
+
+    <!--测试方法注入-->
+
+    <bean id="singletonPrinter" class="com.injectMethod.Printer" scope="singleton"> </bean>
+    <bean id="prototypePrinter" class="com.injectMethod.Printer" scope="prototype"> </bean>
+
+    <bean id="singletonTarget" class="com.injectMethod.TargetObject" scope="singleton">
+        <property name="printer" ref="prototypePrinter"></property>
+        <lookup-method name="createPrototypePrinter" bean="prototypePrinter"></lookup-method>
+        <lookup-method name="createSingletonPrinter" bean="singletonPrinter"></lookup-method>
+
+    </bean>
+
+
+</beans>
