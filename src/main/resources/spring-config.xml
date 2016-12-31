@@ -5,6 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
+    <!--引入aspectj注解支持-->
+    <aop:aspectj-autoproxy/>
+
     <!--测试DI-->
 
     <!--根据ID实例化-->
@@ -12,7 +15,8 @@
     <bean id="morty" class="com.swim.Morty"/>
     <bean id="writeJava" class="com.aop.schema.WriteJava"/>
     <bean id="aspectOfWrite" class="com.aop.schema.AspectOfWrite"/>
-
+    <bean id="aspectAnnotation" class="com.aop.annotation.AspectAnnotation"/>
+    <bean id="sayAop" class="com.aop.annotation.SayAopImpl"/>
     <!--根据构造方法注入-->
 
     <!--autowire注入，会自动寻找set方法，一旦名字一样就自动注入-->
