@@ -5,7 +5,7 @@ package com.aop.annotation;
  */
 public class SayAopImpl implements SayAop {
     @Override
-    public void say() {
-        System.out.println("say annotation");
+    public void say(String param) {
+        System.out.println("say annotation: "+ param);
     }
 }

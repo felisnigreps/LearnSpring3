@@ -1,13 +1,15 @@
 package com.aop.schema;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
  * Created by xugenli on 2016/12/29.
  */
 public class AspectOfWrite {
-    public void before() {
+    public void before(JoinPoint joinPoint) {
         System.out.println("----before without args----");
+        System.out.println(joinPoint.toLongString()+"---"+joinPoint.getThis());
     }
 
     public void afterFinally() {

@@ -12,7 +12,7 @@ public class SayAopImplTest {
     public void say() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
         SayAop sayAop = context.getBean("sayAop",SayAop.class);
-        sayAop.say();
+        sayAop.say("It's not an option");
     }
 
 }
