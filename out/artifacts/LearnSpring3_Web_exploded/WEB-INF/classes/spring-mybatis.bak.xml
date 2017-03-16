@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd
+	">
+
+
+
+    <context:property-placeholder location="classpath:jdbc.properties,classpath:druid.properties" />
+
+<!--引入aspectj注解支持-->
+    <aop:aspectj-autoproxy/>
+
+    <!--测试DI-->
+
+    <!--根据ID实例化-->
+    <!--<bean id="rick" class="com.cat.RickHi"/>-->
+    <bean id="morty" class="com.swim.Morty"/>
+    <bean id="writeJava" class="com.aop.schema.WriteJava"/>
+    <bean id="aspectOfWrite" class="com.aop.schema.AspectOfWrite"/>
+    <bean id="aspectAnnotation" class="com.aop.annotation.AspectAnnotation"/>
+    <bean id="sayAop" class="com.aop.annotation.SayAopImpl"/>
+    <!--根据构造方法注入-->
+
+    <!--autowire注入，会自动寻找set方法，一旦名字一样就自动注入-->
+    <!--<bean id="rick" class="com.swim.RickHi" autowire="byName">-->
+    <!--byType注入,会寻找 Morty类型，有一个就直接找到，多个观察有没有primary=true的bean,有就使用，没有就报错-->
+    <!--也可以使用autowire-candidate=false来避免找到-->
+    <bean id="rick" class="com.swim.RickHi">
+        <!--constructor和byType功能一样       -->
+        <!--<bean id="rick" class="com.swim.RickHi" autowire="constructor">-->
+        <constructor-arg name="age" value="65"/>
+        <!--注入bean ID-->
+        <!--<constructor-arg name="morty" ref="morty"/>-->
+        <property name="songs">
+            <list value-type="java.lang.String">
+                <value>who had known</value>
+                <value>step</value>
+                <value>love for a child</value>
+                <value>who had known</value>
+            </list>
+
+        </property>
+        <property name="tel">
+            <map key-type="java.lang.String" value-type="java.lang.Integer">
+                <entry key="jason" value="1380998754"/>
+                <!--引用对象和引用基本类型是一样的用法-->
+                <!--<entry key-ref="" value-ref=""></entry>-->
+            </map>
+        </property>
+    </bean>
+
+
+    <!--测试方法注入-->
+
+
+    <bean id="singletonPrinter" class="com.injectMethod.Printer" scope="singleton"/>
+    <bean id="prototypePrinter" class="com.injectMethod.Printer" scope="prototype"/>
+
+
+
+    <!--AOP测试-->
+    <!--一定要把切入点语法写对了-->
+    <!--AOP需要的Jar包要导入全-->
+    <aop:config >
+        <aop:pointcut id="pointcut" expression="execution(* com.aop..*.write(..))"/>
+        <!--这个args中的参数和方法中的参数名称是要对应的-->
+        <aop:pointcut id="pointcutWithArgs" expression="execution(* com.aop..*.writeSong(..)) and args(args)"/>
+
+        <aop:aspect ref="aspectOfWrite">
+            <aop:before pointcut-ref="pointcut" method="before"/>
+            <!--这块为了举例子所以把pointcut的expression又重新写了一遍-->
+            <aop:after pointcut="execution(* com.aop.schema.WriteJava.write(..))" method="afterFinally"/>
+
+            <aop:before method="beforeWithArgs" pointcut-ref="pointcutWithArgs"/>
+            <aop:after method="afterWithArgs" pointcut-ref="pointcutWithArgs"/>
+            <aop:after-throwing method="afterThrowing" pointcut="execution(* com.aop..*.writeException(..)) and args(args)"/>
+            <aop:after-returning method="afterReturning" pointcut="execution(* com.aop..*.writeReturn(..))"/>
+            <aop:around method="around" pointcut="execution(* com.aop..*.writeAround(..))" />
+            
+            <!--为对象引入新接口-->
+        </aop:aspect>
+    </aop:config>
+
+<!--创建数据源-->
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+
+        <!--basic configuration-->
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <property name="initialSize" value="${druid.initialSize}"/>
+        <property name="minIdle" value="${druid.minIdle}"/>
+
+    </bean>
+
+
+
+</beans>

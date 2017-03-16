@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.AccountDao">
+
+    <resultMap id="account" type="com.model.Account">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="money" column="money"/>
+    </resultMap>
+
+
+    <select id="findAllAccount" resultMap="account">
+        select id, name, money
+        from account;
+    </select>
+
+    <!--useGeneratedKeys="true" keyProperty="id"的作用是将插入的主键返回到account对象中-->
+    <insert id="insertAccount" useGeneratedKeys="true" keyProperty="id">
+        insert into account (name,money) values (#{name},#{money});
+    </insert>
+
+
+    <select id="findAccountsById" resultMap="account">
+        select id, name, money
+        from account
+        where 1=1
+        <if test="beginId!=null">
+            <![CDATA[ and id >= #{beginId}]]>
+        </if>
+        <if test="endId!=null">
+            <![CDATA[ nd id <= #{endId}]]>  a
+        </if>
+    </select>
+
+
+</mapper>
