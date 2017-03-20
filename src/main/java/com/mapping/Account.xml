@@ -25,13 +25,21 @@
         select id, name, money
         from account
         where 1=1
-        <if test="beginId!=null">
+        <if test="beginId!=null and beginId!=''">
             <![CDATA[ and id >= #{beginId}]]>
         </if>
-        <if test="endId!=null">
-            <![CDATA[ nd id <= #{endId}]]>  a
+        <if test="endId!=null and endId!=''">
+            <![CDATA[ and id <= #{endId}]]>
         </if>
     </select>
 
+    <update id="updateAccount">
+        update account set name=#{name},money=#{money}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAccount">
+        delete from account where id = #{id}
+    </delete>
 
 </mapper>

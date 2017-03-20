@@ -13,4 +13,7 @@ public interface UserService {
     List<Account> findAllAccount();
     int insertAccount(Account account);
     List<Account> findAccounts(int beginId, int endId);
+    int updateAccount(Account account);
+
+    int deleteAccount(Integer id);
 }

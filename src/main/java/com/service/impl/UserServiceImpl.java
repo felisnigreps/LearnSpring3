@@ -26,8 +26,17 @@ public class UserServiceImpl implements UserService {
          return accountDao.insertAccount(account);
     }
 
-    @Override
     public List<Account> findAccounts(int beginId, int endId) {
         return accountDao.findAccountsById(beginId,endId);
+    }
+
+    @Override
+    public int updateAccount(Account account) {
+        return accountDao.updateAccount(account);
+    }
+
+    @Override
+    public int deleteAccount(Integer id) {
+        return accountDao.deleteAccount(id);
     }
 }
